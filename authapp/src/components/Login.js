@@ -24,7 +24,6 @@ const Login = props => {
         // axios.post('http://localhost:8000/api/login', creds)
             .then(res => {
                 console.log("login res: ", res, '\n', creds);
-                
                 localStorage.setItem('token', res.data.token)
                 props.history.push('/restricted/users')
             })
