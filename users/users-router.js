@@ -33,12 +33,25 @@ router.post('/login', (req, res) => {
         if (!user || !bcrypt.compareSync(password, user.password)) {
             return res.status(401).json({ error: 'You shall not pass!' });
         } else {
+            req.session.username = user.username;
+            req.session.loggedIn = true;
+            req.session.cookie.userId = user.id;
             const token = generateToken(user);
-            res.status(200).json({ message: `Welcome, ${user.username}! have a token...`, token })
+            res.status(200).json({ 
+                message: `Welcome, ${user.username}! have a token...`, 
+                cookie: req.session.cookie,
+                token
+            })
         }
     })
     .catch(err => {
         res.status(500).json(err);
+    })
+})
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.status(200).json({ message: 'farewell' })
     })
 })
 
