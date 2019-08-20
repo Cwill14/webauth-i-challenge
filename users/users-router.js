@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const Users = require('./users-model.js');
 const restricted = require('../auth/restricted-middleware.js');
+const generateToken = require('../auth/generateToken-middleware.js');
 
 const router = express.Router();
 
@@ -30,9 +31,10 @@ router.post('/login', (req, res) => {
     .first()
     .then(user => {
         if (!user || !bcrypt.compareSync(password, user.password)) {
-            return res.status(401).json({ error: 'Incorrect credentials' });
+            return res.status(401).json({ error: 'You shall not pass!' });
         } else {
-            res.status(200).json({ message: `Welcome, ${user.username}!`})
+            const token = generateToken(user);
+            res.status(200).json({ message: `Welcome, ${user.username}! have a token...`, token })
         }
     })
     .catch(err => {
@@ -40,7 +42,7 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.get('/users', restricted, (req, res) => {
+router.get('/restricted/users', restricted, (req, res) => {
     Users.getUsers()
         .then(list => {
             res.status(200).json(list);
