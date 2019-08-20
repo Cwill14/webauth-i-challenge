@@ -18,15 +18,18 @@ const Login = props => {
         })
     }
 
-    const login = () => {
+    const login = e => {
+        e.preventDefault();
         axiosWithAuth().post('http://localhost:8000/api/login', creds)
         // axios.post('http://localhost:8000/api/login', creds)
             .then(res => {
-                console.log("login res: ", res);
+                console.log("login res: ", res, '\n', creds);
+                
                 localStorage.setItem('token', res.data.token)
                 props.history.push('/restricted/users')
             })
             .catch(err => console.log("login err: ", err))
+            
         setCreds({
             username: '',
             password: ''

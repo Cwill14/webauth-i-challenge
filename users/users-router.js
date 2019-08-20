@@ -35,7 +35,8 @@ router.post('/login', (req, res) => {
         } else {
             req.session.username = user.username;
             req.session.loggedIn = true;
-            req.session.cookie.userId = user.id;
+            // req.session.cookie.userId = user.id;
+            req.session.cookie = {...req.session.cookie, userId: user.id}
             const token = generateToken(user);
             res.status(200).json({ 
                 message: `Welcome, ${user.username}! have a token...`, 

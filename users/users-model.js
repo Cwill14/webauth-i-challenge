@@ -22,4 +22,5 @@ function getUsers() {
 function findId(id) {
     return db('users')
         .where({ id })
+        .first()
 }
