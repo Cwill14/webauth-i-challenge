@@ -10,8 +10,12 @@ const Users = props => {
     const [farewell, setFarewell] = useState('')
 
     useEffect(() => {
-        // axiosWithAuth().get('http://localhost:8000/api/restricted/users')
-        axios.get('http://localhost:8000/api/restricted/users')
+        axiosWithAuth().get('http://localhost:8000/api/restricted/users', {
+            sessions: {
+                loggedIn: true
+            }
+        })
+        // axios.get('http://localhost:8000/api/restricted/users')
             .then(res => {
                 console.log("Users useEffect res: ", res);
                 // setList()
@@ -25,11 +29,10 @@ const Users = props => {
     const logout = () => {
         axiosWithAuth().get('http://localhost:8000/api/logout')
             .then(res => {
-                console.log(res);
                 setFarewell(res.data.message)
                 setLoggingOut(true);
                 localStorage.removeItem('token');
-                setTimeout(() => props.history.push('/'), 2000);
+                setTimeout(() => props.history.push('/'), 1500);
                 // props.history.push('/');
             })
             .catch(err => {
