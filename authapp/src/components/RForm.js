@@ -17,7 +17,8 @@ const RForm = props => {
         })
     }
 
-    const register = () => {
+    const register = e => {
+        e.preventDefault();
         axiosWithAuth().post('http://localhost:8000/api/register', creds)
             .then(res => {
                 console.log("register res: ", res);
